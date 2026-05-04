@@ -27,11 +27,11 @@ connectCloudinary();
 // allow multiple origins for CORS
 const allowedOrigins = [
   'http://localhost:5173',
-  process.env.FRONTEND_URL
+  'https://stocked-frontend3.vercel.app'
 ].filter(Boolean);
 
 // middleware configuration
-app.use(cors({origin: allowedOrigins , credentials: true}));
+app.use(cors({origin: 'https://stocked-frontend3.vercel.app', credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
 
