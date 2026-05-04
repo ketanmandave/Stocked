@@ -19,17 +19,21 @@ import categoryRouter from "./routes/categoryRoutes.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-await connectDB();
-await connectCloudinary();
+// Connect to DB and Cloudinary
+connectDB();
+connectCloudinary();
 
 
+// allow multiple origins for CORS
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
 // middleware configuration
+app.use(cors({origin: allowedOrigins , credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
-// allow multiple origins for CORS
-const allowedOrigins = ['http://localhost:5173']
-app.use(cors({origin: allowedOrigins , credentials: true})); // Adjust the origin as needed
 
 
 
@@ -47,6 +51,13 @@ app.use("/api/category", categoryRouter);
 app.get('/', (req, res) => {
   res.send('Welcome to the Stocked API');
 });
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
+// Only listen when not running on Vercel
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+// Export for Vercel serverless
+export default app;
