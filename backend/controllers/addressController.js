@@ -6,7 +6,6 @@ export const addAddress = async (req, res) => {
     try {
         const { address } = req.body;
 
-        // ✅ FIXED
         const userId = req.user.id;
                                                                                                             
         if (!userId) {
